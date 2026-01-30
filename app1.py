@@ -43,7 +43,7 @@ def login(role):
             st.session_state.role = role
             st.session_state.user = username
             st.success("Login successful")
-            st.rerun()
+            st.experimenal_rerun()
         else:
             st.error("Invalid credentials")
 
@@ -70,7 +70,7 @@ else:
         st.session_state.logged = False
         st.session_state.role = None
         st.session_state.user = None
-        st.rerun()
+        st.experimenal_rerun()
 
     # ================= STUDENT =================
     if role == "Student":
