@@ -29,10 +29,10 @@ if "user" not in st.session_state:
 # ---------------- LOGIN FUNCTION ----------------
 def login(role):
     st.subheader(f"🔐 {role} Login")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    username = st.text_input("Username", key=f"{role}_username")
+    password = st.text_input("Password", type="password", key=f"{role}_password")
 
-    if st.button("Login"):
+    if st.button("Login", key=f"{role}_login"):
         user = conn.execute(
             "SELECT * FROM users WHERE username=? AND password=? AND role=?",
             (username, password, role)
@@ -43,7 +43,7 @@ def login(role):
             st.session_state.role = role
             st.session_state.user = username
             st.success("Login successful")
-            st.experimenal_rerun()
+            st.experimental_rerun()
         else:
             st.error("Invalid credentials")
 
@@ -70,19 +70,19 @@ else:
         st.session_state.logged = False
         st.session_state.role = None
         st.session_state.user = None
-        st.experimenal_rerun()
+        st.experimental_rerun()
 
     # ================= STUDENT =================
     if role == "Student":
         st.header("🎓 Student Dashboard")
 
         with st.expander("➕ Submit New Project"):
-            title = st.text_input("Project Title")
-            desc = st.text_area("Project Description")
-            deadline = st.date_input("Project Deadline")
-            pdf = st.file_uploader("Upload Project Report (PDF)", type=["pdf"])
+            title = st.text_input("Project Title", key="proj_title")
+            desc = st.text_area("Project Description", key="proj_desc")
+            deadline = st.date_input("Project Deadline", key="proj_deadline")
+            pdf = st.file_uploader("Upload Project Report (PDF)", type=["pdf"], key="proj_pdf")
 
-            if st.button("Submit Project"):
+            if st.button("Submit Project", key="submit_project"):
                 if not pdf:
                     st.warning("Please upload a PDF file")
                 else:
@@ -116,7 +116,7 @@ else:
 
         # View / Download PDF
         st.subheader("📂 View Project Report")
-        view_id = st.number_input("Enter Project ID to View", min_value=1)
+        view_id = st.number_input("Enter Project ID to View", min_value=1, key="view_id")
 
         row = conn.execute(
             "SELECT pdf_path FROM projects WHERE id=?",
@@ -138,11 +138,11 @@ else:
         # Evaluation section
         st.subheader("✏️ Evaluate Project")
         eval_id = st.number_input("Project ID to Evaluate", min_value=1, key="eval")
-        status = st.selectbox("Project Status", ["Approved", "In Progress", "Completed"])
-        marks = st.slider("Marks", 0, 100)
-        feedback = st.text_area("Feedback")
+        status = st.selectbox("Project Status", ["Approved", "In Progress", "Completed"], key="status")
+        marks = st.slider("Marks", 0, 100, key="marks")
+        feedback = st.text_area("Feedback", key="feedback")
 
-        if st.button("Submit Evaluation"):
+        if st.button("Submit Evaluation", key="submit_eval"):
             conn.execute("""
                 UPDATE projects
                 SET status=?, marks=?, feedback=?
@@ -159,13 +159,13 @@ else:
         st.subheader("➕ Create New User")
         col1, col2, col3 = st.columns(3)
         with col1:
-            new_user = st.text_input("Username")
+            new_user = st.text_input("Username", key="new_user")
         with col2:
-            new_pass = st.text_input("Password")
+            new_pass = st.text_input("Password", key="new_pass")
         with col3:
-            new_role = st.selectbox("Role", ["Student", "Teacher"])
+            new_role = st.selectbox("Role", ["Student", "Teacher"], key="new_role")
 
-        if st.button("Create User"):
+        if st.button("Create User", key="create_user"):
             try:
                 conn.execute(
                     "INSERT INTO users(username,password,role) VALUES(?,?,?)",
