@@ -1,21 +1,16 @@
 # Streamlit
 streamlit==1.26.0
 
-# Data handling
-pandas>=2.1.2   # Python 3.13 compatible
-numpy>=1.26.0   # needed for pandas
+# Data processing
+pandas==2.1.2
+numpy==1.25.2
 
 # Plotting
-matplotlib>=3.8.1   # latest minor version that supports Python 3.13
-seaborn>=0.12.2      # optional if you use seaborn
+matplotlib==3.8.1
+Pillow==9.5.0
 
-# Images
-Pillow>=10.1.0   # fixed build issues with Python 3.13
-
-# Optional: nicer exceptions/logging in Streamlit
-rich>=14.3.1
-
-# Markdown support
-markdown-it-py>=4.0.0
-mdurl>=0.1.2
-pygments>=2.19.2
+# Optional extras for nicer formatting
+rich==14.3.1
+markdown-it-py==4.0.0
+mdurl==0.1.2
+pygments==2.19.2
